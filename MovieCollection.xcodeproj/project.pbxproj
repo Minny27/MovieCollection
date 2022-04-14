@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		561A3DA52807C0AE0055F44C /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A3DA42807C0AE0055F44C /* String.swift */; };
+		561A3DA92807E6B30055F44C /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561A3DA82807E6B30055F44C /* MovieDetailViewController.swift */; };
 		56678D2428067A1200BEF015 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56678D2328067A1200BEF015 /* AppDelegate.swift */; };
 		56678D2628067A1200BEF015 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56678D2528067A1200BEF015 /* SceneDelegate.swift */; };
 		56678D2828067A1200BEF015 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56678D2728067A1200BEF015 /* HomeViewController.swift */; };
@@ -48,6 +50,8 @@
 /* Begin PBXFileReference section */
 		2D2DB42E72F7B7CAF2D82C0E /* Pods_MovieCollection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieCollection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		501421AD8885D57FEEB82D8F /* Pods-MovieCollection.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieCollection.debug.xcconfig"; path = "Target Support Files/Pods-MovieCollection/Pods-MovieCollection.debug.xcconfig"; sourceTree = "<group>"; };
+		561A3DA42807C0AE0055F44C /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		561A3DA82807E6B30055F44C /* MovieDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
 		56678D2028067A1200BEF015 /* MovieCollection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieCollection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56678D2328067A1200BEF015 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56678D2528067A1200BEF015 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +114,30 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		561A3DA32807C0760055F44C /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				561A3DA42807C0AE0055F44C /* String.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		561A3DA62807E6830055F44C /* MovieDetail */ = {
+			isa = PBXGroup;
+			children = (
+				561A3DA72807E69D0055F44C /* Controller */,
+			);
+			path = MovieDetail;
+			sourceTree = "<group>";
+		};
+		561A3DA72807E69D0055F44C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				561A3DA82807E6B30055F44C /* MovieDetailViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		56678D1728067A1200BEF015 = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +163,7 @@
 		56678D2228067A1200BEF015 /* MovieCollection */ = {
 			isa = PBXGroup;
 			children = (
+				561A3DA32807C0760055F44C /* Extension */,
 				56678D5F2806957100BEF015 /* Strings */,
 				56678D5C280694A200BEF015 /* Network */,
 				56678D57280691FE00BEF015 /* Source */,
@@ -185,6 +214,7 @@
 			isa = PBXGroup;
 			children = (
 				561A3DA22807A0AC0055F44C /* Home */,
+				561A3DA62807E6830055F44C /* MovieDetail */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -452,6 +482,7 @@
 				56678D6E2806A90800BEF015 /* Item.swift in Sources */,
 				56678D6C2806A8CA00BEF015 /* ReceivedMovieModel.swift in Sources */,
 				56678D562806839800BEF015 /* Coordinator.swift in Sources */,
+				561A3DA52807C0AE0055F44C /* String.swift in Sources */,
 				56678D64280696C800BEF015 /* NetworkError.swift in Sources */,
 				56678D2828067A1200BEF015 /* HomeViewController.swift in Sources */,
 				56678D5E280694C800BEF015 /* NetworkManager.swift in Sources */,
@@ -459,6 +490,7 @@
 				56678D742806AF5900BEF015 /* MovieTablaViewCellModel.swift in Sources */,
 				56678D722806AE0A00BEF015 /* MovieTableViewModel.swift in Sources */,
 				56678D612806957E00BEF015 /* Strings.swift in Sources */,
+				561A3DA92807E6B30055F44C /* MovieDetailViewController.swift in Sources */,
 				56678D672806994100BEF015 /* MovieTableViewCell.swift in Sources */,
 				56678D2628067A1200BEF015 /* SceneDelegate.swift in Sources */,
 			);

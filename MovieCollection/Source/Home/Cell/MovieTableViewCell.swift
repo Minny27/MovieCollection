@@ -84,7 +84,7 @@ class MovieTableViewCell: UITableViewCell {
         
         containerView.addSubview(stackView)
         stackView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        stackView.leftAnchor.constraint(equalTo: movieImageView.rightAnchor, constant: 5).isActive = true
+        stackView.leftAnchor.constraint(equalTo: movieImageView.rightAnchor, constant: 10).isActive = true
         
         stackView.addArrangedSubview(titleLabel)
         titleLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30).isActive = true
@@ -99,15 +99,15 @@ class MovieTableViewCell: UITableViewCell {
         ratingLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
     }
     
-    func updateCell(_ movieInfo: MovieTableViewCellModel) {
+    func updateCell(_ movieInfo: MovieTableViewCellModel?) {
         setupMovieImage(
-            imageUrlString: movieInfo.imageUrlString ?? "",
+            imageUrlString: movieInfo?.imageUrlString ?? "",
             imageView: movieImageView
         )
-        titleLabel.text = movieInfo.title ?? ""
-        directionLabel.text = "감독: " + (movieInfo.director ?? "")
-        actorsLabel.text = "출연: " + (movieInfo.actors ?? "")
-        ratingLabel.text = "평점: " + (movieInfo.rating ?? "")
+        titleLabel.text = movieInfo?.title ?? ""
+        directionLabel.text = "감독: " + (movieInfo?.director ?? "")
+        actorsLabel.text = "출연: " + (movieInfo?.actors ?? "")
+        ratingLabel.text = "평점: " + (movieInfo?.rating ?? "")
     }
     
     func setupMovieImage(imageUrlString: String, imageView: UIImageView) {

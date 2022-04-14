@@ -9,8 +9,27 @@ import UIKit
 
 class HomeViewController: UIViewController {
 
-    // Properties
+    // MARK: - Properties
     let movieTableViewModel = MovieTableViewModel()
+    
+    let movieSearchBar: UISearchBar = {
+        let sb = UISearchBar()
+        sb.isTranslucent = false
+        sb.tintColor = .orange
+        sb.setImage(UIImage(), for: .search, state: .normal)
+        sb.searchTextField.attributedPlaceholder = NSAttributedString(
+            string: "영화 제목을 입력해보세요.",
+            attributes: [.foregroundColor: UIColor.lightGray]
+        )
+        sb.searchTextField.backgroundColor = .white
+        sb.searchTextField.tintColor = .black
+        sb.searchTextField.layer.borderWidth = 1
+        sb.searchTextField.layer.borderColor = UIColor.lightGray.cgColor
+        sb.searchTextField.layer.cornerRadius = 5
+        sb.backgroundImage = UIImage()
+        sb.translatesAutoresizingMaskIntoConstraints = false
+        return sb
+    }()
     
     let movieTableView: UITableView = {
         let tv = UITableView()
@@ -20,26 +39,21 @@ class HomeViewController: UIViewController {
         return tv
     }()
     
-    // Lifecycles
+    // MARK: - Lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         
         setupNavigationController()
+        setupMovieSearchBar()
         setupMovieTableView()
-        
-        movieTableViewModel.fetchMovieData()
-        
-        movieTableViewModel.movieList.bind { _ in
-            DispatchQueue.main.async {
-                self.movieTableView.reloadData()
-            }
-        }
+        fetchData()
     }
     
     func setupNavigationController() {
         navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.tintColor = .black
         let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
         titleLabel.text = "네이버 영화 검색"
         titleLabel.font = .boldSystemFont(ofSize: 22)
@@ -50,11 +64,24 @@ class HomeViewController: UIViewController {
             target: nil,
             action: nil
         )
-        navigationController?.navigationBar.tintColor = .black
+    }
+    
+    func setupMovieSearchBar() {
+        view.addSubview(movieSearchBar)
+        movieSearchBar.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        movieSearchBar.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 8).isActive = true
+        movieSearchBar.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8).isActive = true
+        movieSearchBar.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        movieSearchBar.delegate = self
     }
     
     func setupMovieTableView() {
         view.addSubview(movieTableView)
+        movieTableView.topAnchor.constraint(equalTo: movieSearchBar.bottomAnchor).isActive = true
+        movieTableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        movieTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        movieTableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         
         movieTableView.register(
             MovieTableViewCell.self,
@@ -63,13 +90,17 @@ class HomeViewController: UIViewController {
         
         movieTableView.dataSource = self
         movieTableView.delegate = self
-        
-        movieTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        movieTableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        movieTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        movieTableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
-
+    
+    func fetchData() {
+        movieTableViewModel.fetchMovieData()
+        
+        movieTableViewModel.movieList.bind { _ in
+            DispatchQueue.main.async {
+                self.movieTableView.reloadData()
+            }
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -98,11 +129,25 @@ extension HomeViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension HomeViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let movieInfo = movieTableViewModel.movieList.value?[indexPath.row]
+        let movieDetailViewController = MovieDetailViewController()
+        movieDetailViewController.movieInfo = movieInfo
+        navigationController?.pushViewController(movieDetailViewController, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 110
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
+    }
+}
+
+extension HomeViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        Strings.keyword = searchBar.searchTextField.text ?? ""
+        fetchData()
     }
 }
