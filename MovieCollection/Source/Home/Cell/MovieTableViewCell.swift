@@ -25,6 +25,16 @@ class MovieTableViewCell: UITableViewCell {
     
     let starButton: UIButton = {
         let button = UIButton()
+        button.setTitle("★", for: .normal)
+        button.setTitleColor(.lightGray, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 25)
+        
+        button.addTarget(
+            self,
+            action: #selector(clickStarButton),
+            for: .touchUpInside
+        )
+        
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -86,6 +96,12 @@ class MovieTableViewCell: UITableViewCell {
         stackView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         stackView.leftAnchor.constraint(equalTo: movieImageView.rightAnchor, constant: 10).isActive = true
         
+        containerView.addSubview(starButton)
+        starButton.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        starButton.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
+        starButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        starButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        
         stackView.addArrangedSubview(titleLabel)
         titleLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30).isActive = true
         
@@ -123,5 +139,13 @@ class MovieTableViewCell: UITableViewCell {
                 .cacheOriginalImage
             ]
         )
+    }
+    
+    @objc func clickStarButton() {
+        if starButton.titleLabel?.textColor == .lightGray {
+            starButton.setTitleColor(.systemYellow, for: .normal)
+        } else {
+            starButton.setTitleColor(.lightGray, for: .normal)
+        }
     }
 }
