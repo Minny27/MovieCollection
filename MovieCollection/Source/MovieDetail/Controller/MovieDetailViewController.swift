@@ -5,12 +5,13 @@
 //  Created by SeungMin on 2022/04/14.
 //
 
-import WebKit
 import UIKit
+import WebKit
 
 class MovieDetailViewController: UIViewController {
     
     // MARK: - Properties
+    let realmManager = RealmManager.shared
     var movieInfo: MovieTableViewCellModel?
     
     let movieDetailTableView: UITableView = {
@@ -83,6 +84,18 @@ class MovieDetailViewController: UIViewController {
     }
 }
 
+// MARK: - StarButtonDelegate
+extension MovieDetailViewController: StarButtonDelegate {
+    func updateDataBase(_ movieInfo: MovieTableViewCellModel, _ isClicked: ButtonStatus) {
+        switch isClicked {
+        case .off:
+            realmManager.delete(movieInfo: movieInfo)
+        case .on:
+            realmManager.create(movieInfo: movieInfo)
+        }
+    }
+}
+
 // MARK: - UITableViewDataSource
 extension MovieDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -95,8 +108,10 @@ extension MovieDetailViewController: UITableViewDataSource {
             for: indexPath
         ) as! MovieTableViewCell
         cell.selectionStyle = .none
+        cell.cellInfo = movieInfo
         cell.setupCell()
         cell.updateCell(movieInfo)
+        cell.starButtonDelegate = self
         return cell
     }
 }
