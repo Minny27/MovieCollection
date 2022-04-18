@@ -12,11 +12,21 @@ class FavoritesViewController: UIViewController {
     // MARK: - Properties
     let realmManager = RealmManager.shared
     
-    let movieTableView: UITableView = {
+    let favoritesTableView: UITableView = {
         let tv = UITableView()
         tv.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
+    }()
+    
+    var refreshControl: UIRefreshControl = {
+        let rf = UIRefreshControl()
+        rf.addTarget(
+            self,
+            action: #selector(refreshFavorites),
+            for: .valueChanged
+        )
+        return rf
     }()
     
     // MARK: - LifeCycles
@@ -38,25 +48,32 @@ class FavoritesViewController: UIViewController {
     }
     
     func setupMovieTableView() {
-        view.addSubview(movieTableView)
-        movieTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        movieTableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        movieTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        movieTableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        view.addSubview(favoritesTableView)
+        favoritesTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        favoritesTableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        favoritesTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        favoritesTableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         
-        movieTableView.register(
+        favoritesTableView.register(
             MovieTableViewCell.self,
             forCellReuseIdentifier: MovieTableViewCell.identifier
         )
         
         realmManager.read()
         
-        movieTableView.dataSource = self
-        movieTableView.delegate = self
+        favoritesTableView.dataSource = self
+        favoritesTableView.delegate = self
+        
+        favoritesTableView.refreshControl = refreshControl
     }
     
     @objc func clickXmark() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func refreshFavorites() {
+        realmManager.read()
+        favoritesTableView.reloadData()
     }
 }
 
@@ -96,6 +113,14 @@ extension FavoritesViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension FavoritesViewController: UITableViewDelegate {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if let refreshControl = favoritesTableView.refreshControl {
+            if refreshControl.isRefreshing {
+                refreshControl.endRefreshing()
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let movieInfo = realmManager.movieList[indexPath.row]
         let movieDetailViewController = MovieDetailViewController()
