@@ -30,6 +30,7 @@
 		56678D702806AD3E00BEF015 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56678D6F2806AD3E00BEF015 /* Observable.swift */; };
 		56678D722806AE0A00BEF015 /* MovieTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56678D712806AE0A00BEF015 /* MovieTableViewModel.swift */; };
 		56678D742806AF5900BEF015 /* MovieTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56678D732806AF5900BEF015 /* MovieTableViewCellModel.swift */; };
+		56AAE07D280D86780093BA14 /* CustomActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AAE07C280D86780093BA14 /* CustomActivityIndicatorView.swift */; };
 		56B1C2A52809645700DE7AA9 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B1C2A42809645700DE7AA9 /* RealmManager.swift */; };
 		56B1C2A72809672100DE7AA9 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B1C2A62809672100DE7AA9 /* Movie.swift */; };
 		C94B6CEE9A42FE6D0FA6885A /* Pods_MovieCollection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D2DB42E72F7B7CAF2D82C0E /* Pods_MovieCollection.framework */; };
@@ -82,6 +83,7 @@
 		56678D6F2806AD3E00BEF015 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		56678D712806AE0A00BEF015 /* MovieTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewModel.swift; sourceTree = "<group>"; };
 		56678D732806AF5900BEF015 /* MovieTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCellModel.swift; sourceTree = "<group>"; };
+		56AAE07C280D86780093BA14 /* CustomActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomActivityIndicatorView.swift; sourceTree = "<group>"; };
 		56B1C2A42809645700DE7AA9 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		56B1C2A62809672100DE7AA9 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		AC971A57A36E88485C01DE6B /* Pods-MovieCollection.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieCollection.release.xcconfig"; path = "Target Support Files/Pods-MovieCollection/Pods-MovieCollection.release.xcconfig"; sourceTree = "<group>"; };
@@ -205,13 +207,14 @@
 		56678D2228067A1200BEF015 /* MovieCollection */ = {
 			isa = PBXGroup;
 			children = (
+				56678D57280691FE00BEF015 /* Source */,
+				56B1C2A32809643B00DE7AA9 /* DataBase */,
+				56AAE07B280D86590093BA14 /* LoadingView */,
 				5656A98C280AEA0C00FDA8BB /* Enum */,
 				5656A986280AA68C00FDA8BB /* Protocol */,
-				56B1C2A32809643B00DE7AA9 /* DataBase */,
 				561A3DA32807C0760055F44C /* Extension */,
 				56678D5F2806957100BEF015 /* Strings */,
 				56678D5C280694A200BEF015 /* Network */,
-				56678D57280691FE00BEF015 /* Source */,
 				56678D542806838C00BEF015 /* Coordinator */,
 				56678D532806818E00BEF015 /* SupportingFiles */,
 			);
@@ -331,6 +334,14 @@
 				56678D6D2806A90800BEF015 /* Item.swift */,
 			);
 			path = Response;
+			sourceTree = "<group>";
+		};
+		56AAE07B280D86590093BA14 /* LoadingView */ = {
+			isa = PBXGroup;
+			children = (
+				56AAE07C280D86780093BA14 /* CustomActivityIndicatorView.swift */,
+			);
+			path = LoadingView;
 			sourceTree = "<group>";
 		};
 		56B1C2A32809643B00DE7AA9 /* DataBase */ = {
@@ -545,6 +556,7 @@
 				56B1C2A52809645700DE7AA9 /* RealmManager.swift in Sources */,
 				5656A98B280AA80C00FDA8BB /* FavoritesViewController.swift in Sources */,
 				5656A988280AA6E800FDA8BB /* StarButtonDelegate.swift in Sources */,
+				56AAE07D280D86780093BA14 /* CustomActivityIndicatorView.swift in Sources */,
 				56678D742806AF5900BEF015 /* MovieTableViewCellModel.swift in Sources */,
 				56678D722806AE0A00BEF015 /* MovieTableViewModel.swift in Sources */,
 				56678D612806957E00BEF015 /* Strings.swift in Sources */,
