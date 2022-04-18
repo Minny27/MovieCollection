@@ -13,6 +13,7 @@ class MovieDetailViewController: UIViewController {
     // MARK: - Properties
     let realmManager = RealmManager.shared
     var movieInfo: MovieTableViewCellModel?
+    let customActivityIndicatorView = CustomActivityIndicatorView()
     
     let movieDetailTableView: UITableView = {
         let tv = UITableView()
@@ -36,6 +37,7 @@ class MovieDetailViewController: UIViewController {
         setupNavigationController()
         setupMovieDetailTableView()
         setupMovieDetailWebView(urlString: movieInfo?.linkString)
+        setupLoadingView()
     }
     
     func setupNavigationController() {
@@ -76,7 +78,21 @@ class MovieDetailViewController: UIViewController {
             return
         }
         let request = URLRequest(url: url)
+        
         movieDetailWebView.load(request)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+            self.customActivityIndicatorView.loadingView.stopAnimating()
+        }
+    }
+    
+    func setupLoadingView() {
+        movieDetailWebView.addSubview(customActivityIndicatorView)
+        customActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        customActivityIndicatorView.centerXAnchor.constraint(equalTo: movieDetailWebView.centerXAnchor).isActive = true
+        customActivityIndicatorView.centerYAnchor.constraint(equalTo: movieDetailWebView.centerYAnchor).isActive = true
+        customActivityIndicatorView.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        customActivityIndicatorView.heightAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
     @objc func clickBackButton() {
