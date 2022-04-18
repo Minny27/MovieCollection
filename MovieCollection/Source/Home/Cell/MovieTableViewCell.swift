@@ -5,11 +5,14 @@
 //  Created by SeungMin on 2022/04/13.
 //
 
-import Kingfisher
 import UIKit
+import Kingfisher
 
 class MovieTableViewCell: UITableViewCell {
     static let identifier = "MovieTableViewCell"
+    
+    weak var starButtonDelegate: StarButtonDelegate?
+    var cellInfo: MovieTableViewCellModel?
     
     let containerView: UIView = {
         let view = UIView()
@@ -28,13 +31,11 @@ class MovieTableViewCell: UITableViewCell {
         button.setTitle("★", for: .normal)
         button.setTitleColor(.lightGray, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 25)
-        
         button.addTarget(
             self,
             action: #selector(clickStarButton),
             for: .touchUpInside
         )
-        
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -124,6 +125,7 @@ class MovieTableViewCell: UITableViewCell {
         directionLabel.text = "감독: " + (movieInfo?.director ?? "")
         actorsLabel.text = "출연: " + (movieInfo?.actors ?? "")
         ratingLabel.text = "평점: " + (movieInfo?.rating ?? "")
+        starButton.setTitleColor(getButtonColor(movieInfo?.isFavorites ?? false), for: .normal)
     }
     
     func setupMovieImage(imageUrlString: String, imageView: UIImageView) {
@@ -141,11 +143,21 @@ class MovieTableViewCell: UITableViewCell {
         )
     }
     
+    func getButtonColor(_ isFavorites: Bool) -> UIColor {
+        return isFavorites == true ? .systemYellow : .lightGray
+    }
+    
     @objc func clickStarButton() {
-        if starButton.titleLabel?.textColor == .lightGray {
-            starButton.setTitleColor(.systemYellow, for: .normal)
-        } else {
-            starButton.setTitleColor(.lightGray, for: .normal)
+        if cellInfo != nil {
+            if cellInfo!.isFavorites {
+                starButton.setTitleColor(.lightGray, for: .normal)
+                cellInfo!.isFavorites = false
+                starButtonDelegate?.updateDataBase(cellInfo!, .off)
+            } else {
+                starButton.setTitleColor(.systemYellow, for: .normal)
+                cellInfo!.isFavorites = true
+                starButtonDelegate?.updateDataBase(cellInfo!, .on)
+            }
         }
     }
 }
