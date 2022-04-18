@@ -11,6 +11,7 @@ class HomeViewController: UIViewController {
 
     // MARK: - Properties
     let movieTableViewModel = MovieTableViewModel()
+    let realmManager = RealmManager.shared
     
     let movieSearchBar: UISearchBar = {
         let sb = UISearchBar()
@@ -51,19 +52,44 @@ class HomeViewController: UIViewController {
         fetchData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        movieTableView.reloadData()
+    }
+    
     func setupNavigationController() {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.tintColor = .black
-        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
+        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32 - 90, height: view.frame.height))
         titleLabel.text = "네이버 영화 검색"
         titleLabel.font = .boldSystemFont(ofSize: 22)
         navigationItem.titleView = titleLabel
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "⭐️ 즐겨찾기",
-            style: .plain,
-            target: nil,
-            action: nil
+        
+        let buttonLabel = UILabel()
+        buttonLabel.text = "★즐겨찾기"
+        buttonLabel.textAlignment = .center
+        buttonLabel.translatesAutoresizingMaskIntoConstraints = false
+        let attributedString = NSMutableAttributedString(string: buttonLabel.text!)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.systemYellow, range: (buttonLabel.text! as NSString).range(of: "★"))
+        buttonLabel.attributedText = attributedString
+        
+        let starButton = UIButton()
+        starButton.setTitle(buttonLabel.text, for: .normal)
+        starButton.setTitleColor(.clear, for: .normal)
+        starButton.layer.borderWidth = 0.5
+        starButton.layer.borderColor = UIColor.lightGray.cgColor
+        starButton.addTarget(
+            self,
+            action: #selector(clickFavoritesButton),
+            for: .touchUpInside
         )
+        
+        starButton.addSubview(buttonLabel)
+        buttonLabel.centerXAnchor.constraint(equalTo: starButton.centerXAnchor).isActive = true
+        buttonLabel.centerYAnchor.constraint(equalTo: starButton.centerYAnchor).isActive = true
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: starButton)
     }
     
     func setupMovieSearchBar() {
@@ -71,7 +97,6 @@ class HomeViewController: UIViewController {
         movieSearchBar.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         movieSearchBar.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 8).isActive = true
         movieSearchBar.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8).isActive = true
-        movieSearchBar.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         movieSearchBar.delegate = self
     }
@@ -101,6 +126,23 @@ class HomeViewController: UIViewController {
             }
         }
     }
+    
+    @objc func clickFavoritesButton() {
+        let favoritesViewController = FavoritesViewController()
+        navigationController?.pushViewController(favoritesViewController, animated: true)
+    }
+}
+
+// MARK: - StarButtonDelegate
+extension HomeViewController: StarButtonDelegate {
+    func updateDataBase(_ movieInfo: MovieTableViewCellModel, _ isClicked: ButtonStatus) {
+        switch isClicked {
+        case .off:
+            realmManager.delete(movieInfo: movieInfo)
+        case .on:
+            realmManager.create(movieInfo: movieInfo)
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -114,10 +156,14 @@ extension HomeViewController: UITableViewDataSource {
             withIdentifier: MovieTableViewCell.identifier,
             for: indexPath
         ) as! MovieTableViewCell
+        cell.selectionStyle = .none
         
-        if let movieInfo = movieTableViewModel.movieList.value?[indexPath.row] {
+        if var movieInfo = movieTableViewModel.movieList.value?[indexPath.row] {
+            movieInfo.isFavorites = self.realmManager.checkFavorites(movieInfo: movieInfo)
+            cell.cellInfo = movieInfo
             cell.setupCell()
             cell.updateCell(movieInfo)
+            cell.starButtonDelegate = self
         }
         return cell
     }
@@ -130,10 +176,12 @@ extension HomeViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let movieInfo = movieTableViewModel.movieList.value?[indexPath.row]
-        let movieDetailViewController = MovieDetailViewController()
-        movieDetailViewController.movieInfo = movieInfo
-        navigationController?.pushViewController(movieDetailViewController, animated: true)
+        if var movieInfo = movieTableViewModel.movieList.value?[indexPath.row] {
+            movieInfo.isFavorites = realmManager.checkFavorites(movieInfo: movieInfo)
+            let movieDetailViewController = MovieDetailViewController()
+            movieDetailViewController.movieInfo = movieInfo
+            navigationController?.pushViewController(movieDetailViewController, animated: true)
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -147,7 +195,7 @@ extension HomeViewController: UITableViewDelegate {
 
 extension HomeViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        Strings.keyword = searchBar.searchTextField.text ?? ""
+        Strings.keyword = searchText
         fetchData()
     }
 }
