@@ -12,6 +12,7 @@ class HomeViewController: UIViewController {
     // MARK: - Properties
     let movieTableViewModel = MovieTableViewModel()
     let realmManager = RealmManager.shared
+    let customActivityIndicatorView = CustomActivityIndicatorView()
     
     let movieSearchBar: UISearchBar = {
         let sb = UISearchBar()
@@ -49,6 +50,7 @@ class HomeViewController: UIViewController {
         setupNavigationController()
         setupMovieSearchBar()
         setupMovieTableView()
+        setupLoadingView()
         fetchData()
     }
     
@@ -117,6 +119,15 @@ class HomeViewController: UIViewController {
         movieTableView.delegate = self
     }
     
+    func setupLoadingView() {
+        movieTableView.addSubview(customActivityIndicatorView)
+        customActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        customActivityIndicatorView.centerXAnchor.constraint(equalTo: movieTableView.centerXAnchor).isActive = true
+        customActivityIndicatorView.centerYAnchor.constraint(equalTo: movieTableView.centerYAnchor).isActive = true
+        customActivityIndicatorView.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        customActivityIndicatorView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+    }
+    
     func fetchData() {
         movieTableViewModel.fetchMovieData()
         
@@ -159,6 +170,7 @@ extension HomeViewController: UITableViewDataSource {
         cell.selectionStyle = .none
         
         if var movieInfo = movieTableViewModel.movieList.value?[indexPath.row] {
+            customActivityIndicatorView.loadingView.stopAnimating()
             movieInfo.isFavorites = self.realmManager.checkFavorites(movieInfo: movieInfo)
             cell.cellInfo = movieInfo
             cell.setupCell()
