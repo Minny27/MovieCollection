@@ -14,4 +14,5 @@ struct MovieTableViewCellModel {
     let director: String?
     let actors: String?
     let rating: String?
+    var isFavorites = false
 }
