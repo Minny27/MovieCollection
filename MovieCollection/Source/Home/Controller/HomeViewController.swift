@@ -17,7 +17,6 @@ class HomeViewController: UIViewController {
     let movieSearchBar: UISearchBar = {
         let sb = UISearchBar()
         sb.isTranslucent = false
-        sb.tintColor = .orange
         sb.setImage(UIImage(), for: .search, state: .normal)
         sb.searchTextField.attributedPlaceholder = NSAttributedString(
             string: "영화 제목을 입력해보세요.",
@@ -99,7 +98,7 @@ class HomeViewController: UIViewController {
         movieSearchBar.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         movieSearchBar.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 8).isActive = true
         movieSearchBar.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8).isActive = true
-        
+
         movieSearchBar.delegate = self
     }
     
@@ -209,5 +208,9 @@ extension HomeViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         Strings.keyword = searchText
         fetchData()
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        movieSearchBar.searchTextField.resignFirstResponder()
     }
 }

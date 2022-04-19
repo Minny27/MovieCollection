@@ -19,11 +19,19 @@ final class MovieTableViewModel {
                 if !(item.actor?.isEmpty ?? true) { item.actor?.removeLast() }
                 
                 var movieInfo = MovieTableViewCellModel(
-                    title: item.title?.replacingOccurrences(of: "<b>", with: "").replacingOccurrences(of: "</b>", with: ""),
+                    title: item.title?
+                        .replacingOccurrences(of: "<b>", with: "")
+                        .replacingOccurrences(of: "</b>", with: ""),
                     linkString: item.link,
                     imageUrlString: item.image,
-                    director: item.director?.replacingOccurrences(of: "|", with: ", "),
-                    actors: item.actor?.replacingOccurrences(of: "|", with: ", "),
+                    director: item.director?
+                        .replacingOccurrences(of: "<b>", with: "")
+                        .replacingOccurrences(of: "</b>", with: "")
+                        .replacingOccurrences(of: "|", with: ", "),
+                    actors: item.actor?
+                        .replacingOccurrences(of: "<b>", with: "")
+                        .replacingOccurrences(of: "</b>", with: "")
+                        .replacingOccurrences(of: "|", with: ", "),
                     rating: item.userRating
                 )
                 movieInfo.isFavorites = self.realmManager.checkFavorites(movieInfo: movieInfo)
