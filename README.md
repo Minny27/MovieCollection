@@ -1,7 +1,7 @@
 <img src=https://img.shields.io/badge/Swift-5.5-orange.svg> <img src=https://img.shields.io/badge/iOS-15.0+-blue>
 
 ## MovieCollection
-- 영화 검색, 영화 상세 정보, 즐겨찾기 제공 앱
+- 영화 검색 및 상세 정보, 즐겨찾기 제공 앱
 
 ## 미리 보기
 <img src="https://user-images.githubusercontent.com/68800789/164008703-a6cf5bee-55b3-436a-a5bd-1874936f667a.gif" width=25%>
