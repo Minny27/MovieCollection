@@ -11,6 +11,7 @@
 
 ## 기술
 - MVVM
+- UIKit
 - AutoLayout Programmatically
 - Alamofire를 이용한 API 연동
 - Kingfisher를 이용한 이미지 캐싱
