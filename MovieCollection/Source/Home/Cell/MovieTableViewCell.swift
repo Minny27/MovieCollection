@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Kingfisher
 
 class MovieTableViewCell: UITableViewCell {
     static let identifier = "MovieTableViewCell"
@@ -127,30 +126,12 @@ class MovieTableViewCell: UITableViewCell {
     }
     
     func updateCell(_ movieInfo: MovieTableViewCellModel?) {
-        setupMovieImage(
-            imageUrlString: movieInfo?.imageUrlString ?? "",
-            imageView: movieImageView
-        )
+        movieImageView.setupMovieImage(from: movieInfo?.imageUrlString ?? "")
         titleLabel.text = movieInfo?.title ?? ""
         directionLabel.text = "감독: " + (movieInfo?.director ?? "")
         actorsLabel.text = "출연: " + (movieInfo?.actors ?? "")
         ratingLabel.text = "평점: " + (movieInfo?.rating ?? "")
         starButton.setTitleColor(getButtonColor(movieInfo?.isFavorites ?? false), for: .normal)
-    }
-    
-    func setupMovieImage(imageUrlString: String, imageView: UIImageView) {
-        let processor = DownsamplingImageProcessor(size: CGSize(width: 60, height: 90))
-        movieImageView.kf.indicatorType = .activity
-        movieImageView.kf.setImage(
-            with: URL(string: imageUrlString),
-            placeholder: UIImage(named: "placeholderImage"),
-            options: [
-                .processor(processor),
-                .scaleFactor(UIScreen.main.scale),
-                .transition(.fade(1)),
-                .cacheOriginalImage
-            ]
-        )
     }
     
     func getButtonColor(_ isFavorites: Bool) -> UIColor {
