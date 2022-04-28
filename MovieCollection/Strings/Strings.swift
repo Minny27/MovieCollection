@@ -9,7 +9,7 @@ enum Strings {
     static let apiKey = "zSNFHRyW116cmqwwuLRJ"
     static let password = "1PxJnc3C0L"
     static let baseUrl = "https://openapi.naver.com/v1/search/movie.json?query="
-    static let movieCount = "&display=20"
+    static let movieCount = "&display=100"
     static var keyword =  "국가"
     
     static var urlString: String {
