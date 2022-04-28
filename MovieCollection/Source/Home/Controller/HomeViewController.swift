@@ -172,7 +172,6 @@ extension HomeViewController: UITableViewDataSource {
             customActivityIndicatorView.loadingView.stopAnimating()
             movieInfo.isFavorites = self.realmManager.checkFavorites(movieInfo: movieInfo)
             cell.cellInfo = movieInfo
-            cell.setupCell()
             cell.updateCell(movieInfo)
             cell.starButtonDelegate = self
         }
