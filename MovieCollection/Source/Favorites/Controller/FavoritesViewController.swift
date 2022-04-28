@@ -104,7 +104,6 @@ extension FavoritesViewController: UITableViewDataSource {
         
         let movieInfo = realmManager.movieList[indexPath.row]
         cell.cellInfo = movieInfo
-        cell.setupCell()
         cell.updateCell(movieInfo)
         cell.starButtonDelegate = self
         return cell

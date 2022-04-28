@@ -125,7 +125,6 @@ extension MovieDetailViewController: UITableViewDataSource {
         ) as! MovieTableViewCell
         cell.selectionStyle = .none
         cell.cellInfo = movieInfo
-        cell.setupCell()
         cell.updateCell(movieInfo)
         cell.starButtonDelegate = self
         return cell
